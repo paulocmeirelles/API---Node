@@ -17,7 +17,7 @@ app.get("/", (request, response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}.`);
+  console.log(`API Rodando na Porta: ${PORT}.`);
 });
 
 app.get("/contas", db.getConta);
@@ -26,3 +26,5 @@ app.post("/contas", db.createConta);
 app.put("/contas/:id", db.updateConta);
 app.put("/transferencia/:id", db.transferBetweenConta);
 // app.delete("/contas/:id", db.deleteConta);
+
+module.exports = app;

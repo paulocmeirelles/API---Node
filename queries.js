@@ -1,11 +1,4 @@
 const Pool = require("pg").Pool;
-const pool = new Pool({
-  user: "tech",
-  host: "35.184.90.54",
-  database: "appsgrowth",
-  password: "Ohm<LTR$IbUX#%}V",
-  port: 5432,
-});
 
 const getConta = (request, response) => {
   pool.query("SELECT * FROM users ORDER BY cpf ASC", (error, results) => {
