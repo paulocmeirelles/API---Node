@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-const db = require("./queries");
+const contasRoute = require("./routes/contasRoutes");
+const transferenciaRoute = require("./routes/transferenciaRoutes");
 
 const PORT = process.env.PORT || 3000;
 
@@ -23,11 +24,7 @@ app.listen(PORT, () => {
   console.log(`API Rodando na Porta: ${PORT}.`);
 });
 
-app.get("/contas", db.getConta);
-app.get("/contas/:id", db.getContaByCPF);
-app.post("/contas", db.createConta);
-app.put("/contas/:id", db.updateConta);
-app.put("/transferencia/:id", db.transferBetweenConta);
-// app.delete("/contas/:id", db.deleteConta);
+app.use("/contas", contasRoute);
+app.use("/transferencia", transferenciaRoute);
 
 module.exports = app;
