@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
 const db = require("./queries");
 
 const PORT = process.env.PORT || 3000;
+
+app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use(bodyParser.json());
 app.use(
