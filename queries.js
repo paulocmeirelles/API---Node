@@ -2,11 +2,11 @@ const Pool = require("pg").Pool;
 require("dotenv").config({ path: "./secretKeys.env" });
 
 const pool = new Pool({
-  user: process.env.user,
-  host: process.env.host,
-  database: process.env.database,
-  password: process.env.password,
-  port: process.env.port,
+  user: process.env.user || "psql",
+  host: process.env.host || "localhost",
+  database: process.env.database || "apinode",
+  password: process.env.password || "password",
+  port: process.env.port || 5432,
 });
 
 const getConta = (request, response) => {
