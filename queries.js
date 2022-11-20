@@ -1,11 +1,12 @@
 const Pool = require("pg").Pool;
-const secretkeys = require("./secretkeys");
+require("dotenv").config({ path: "./secretKeys.env" });
+
 const pool = new Pool({
-  user: secretkeys.user,
-  host: secretkeys.host,
-  database: secretkeys.database,
-  password: secretkeys.password,
-  port: secretkeys.port,
+  user: process.env.user,
+  host: process.env.host,
+  database: process.env.database,
+  password: process.env.password,
+  port: process.env.port,
 });
 
 const getConta = (request, response) => {
