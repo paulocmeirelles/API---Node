@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 const getConta = (request, response) => {
-  pool.query("SELECT * FROM users ORDER BY cpf ASC", (error, results) => {
+  pool.query("SELECT * FROM contas ORDER BY cpf ASC", (error, results) => {
     if (error) {
       throw error;
     }
@@ -21,7 +21,7 @@ const getConta = (request, response) => {
 const getContaByCPF = (request, response) => {
   const cpf = parseInt(request.params.id);
 
-  pool.query("SELECT * FROM users WHERE cpf = $1", [cpf], (error, results) => {
+  pool.query("SELECT * FROM contas WHERE cpf = $1", [cpf], (error, results) => {
     if (error) {
       res.status(400).send({
         message: "Este cpf não existe",
@@ -35,7 +35,7 @@ const createConta = (request, response) => {
   const { cpf, nome, saldo_reais } = request.body;
 
   pool.query(
-    "INSERT INTO users (cpf, nome_completo,saldo_reais) VALUES ($1, $2, $3) RETURNING *",
+    "INSERT INTO contas (cpf, nome_completo,saldo_reais) VALUES ($1, $2, $3) RETURNING *",
     [cpf, nome, saldo_reais],
     (error, results) => {
       if (error) {
@@ -51,7 +51,7 @@ const updateConta = (request, response) => {
   const { saldo_reais } = request.body;
 
   pool.query(
-    "UPDATE users SET saldo_reais = (SELECT saldo_reais FROM users WHERE cpf = $2)+$1 WHERE cpf = $2 AND (SELECT saldo_reais FROM users WHERE cpf = $2)+$1>0",
+    "UPDATE contas SET saldo_reais = (SELECT saldo_reais FROM contas WHERE cpf = $2)+$1 WHERE cpf = $2 AND (SELECT saldo_reais FROM contas WHERE cpf = $2)+$1>0",
     [saldo_reais, cpf],
     (error, results) => {
       if (error) {
@@ -67,7 +67,7 @@ const transferBetweenConta = async (request, response) => {
   const { cpfTransferido, saldo_reais } = request.body;
 
   pool.query(
-    "UPDATE users SET saldo_reais = CASE cpf WHEN $2 THEN (SELECT saldo_reais FROM users WHERE cpf = $2)-$1 WHEN $3 THEN (SELECT saldo_reais FROM users WHERE cpf = $3)+$1 ELSE saldo_reais END WHERE cpf in($2,$3)",
+    "UPDATE contas SET saldo_reais = CASE cpf WHEN $2 THEN (SELECT saldo_reais FROM contas WHERE cpf = $2)-$1 WHEN $3 THEN (SELECT saldo_reais FROM contas WHERE cpf = $3)+$1 ELSE saldo_reais END WHERE cpf in($2,$3)",
     [saldo_reais, cpf, cpfTransferido],
     (error, results) => {
       if (error) {
@@ -81,7 +81,7 @@ const transferBetweenConta = async (request, response) => {
 const deleteConta = (request, response) => {
   const cpf = parseInt(request.params.id);
 
-  pool.query("DELETE FROM users WHERE cpf = $1", [cpf], (error, results) => {
+  pool.query("DELETE FROM contas WHERE cpf = $1", [cpf], (error, results) => {
     if (error) {
       throw error;
     }
