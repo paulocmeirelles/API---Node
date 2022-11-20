@@ -1,4 +1,12 @@
 const Pool = require("pg").Pool;
+const secretkeys = require("./secretkeys");
+const pool = new Pool({
+  user: secretkeys.user,
+  host: secretkeys.host,
+  database: secretkeys.database,
+  password: secretkeys.password,
+  port: secretkeys.port,
+});
 
 const getConta = (request, response) => {
   pool.query("SELECT * FROM users ORDER BY cpf ASC", (error, results) => {
@@ -14,7 +22,9 @@ const getContaByCPF = (request, response) => {
 
   pool.query("SELECT * FROM users WHERE cpf = $1", [cpf], (error, results) => {
     if (error) {
-      throw error;
+      res.status(400).send({
+        message: "Este cpf não existe",
+      });
     }
     response.status(200).json(results.rows);
   });
